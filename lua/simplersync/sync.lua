@@ -2,6 +2,17 @@ local log = require("simplersync.log")
 
 local sync = {}
 
+local function split_by(inputstr, sep)
+    if sep == nil then
+        sep = "%s"
+    end
+    local t = {}
+    for str in string.gmatch(inputstr, "([^" .. sep .. "]+)") do
+        table.insert(t, str)
+    end
+    return t
+end
+
 --- Tries to start job and repors errors if any where found
 local function safe_sync(command)
     vim.fn.jobstart(command, {
@@ -47,7 +58,9 @@ local function compose_sync_up_command(local_filename, remote)
 end
 
 function sync.sync_up(filename, remote)
-    local cmd = compose_sync_up_command(filename, remote)
+    local remote_dir_table = split_by(filename, "/")
+    local remote_dir = table.concat(remote_dir_table, "/", 1, #remote_dir_table - 1)
+    local cmd = compose_sync_up_command(filename, remote .. remote_dir)
     safe_sync(cmd)
 end
 
