@@ -1,0 +1,5 @@
+target
+lua/deps
+*.so
+doc/tags
+luacov*

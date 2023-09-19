@@ -1,0 +1,1 @@
+require("simplersync.health").check()
