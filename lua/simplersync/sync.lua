@@ -1,4 +1,5 @@
 local log = require("simplersync.log")
+local config = require("simplersync.config")
 
 local sync = {}
 
@@ -51,16 +52,37 @@ local function create_filters(path)
     return include, exclude
 end
 
+local function get_current_config(current_dir, remote_dir)
+    local idx = string.find(current_dir, remote_dir)
+
+    if idx == nil then
+        return ""
+    end
+
+    local config_path = string.sub(current_dir, 1, idx - 1)
+    print(config_path)
+    local config_table = config.load(config_path)
+
+    return config_table
+end
+
 local function compose_sync_up_command(local_filename, remote)
     -- read .gitignore append lines without ! with --include
     local include, exclude = create_filters(".gitignore")
     return "rsync -varz --delete" .. include .. exclude .. local_filename .. " " .. remote
 end
 
-function sync.sync_up(filename, remote)
+function sync.sync_up(filename, current_dir)
     local remote_dir_table = split_by(filename, "/")
     local remote_dir = table.concat(remote_dir_table, "/", 1, #remote_dir_table - 1)
-    local cmd = compose_sync_up_command(filename, remote .. remote_dir)
+    local config = get_current_config(current_dir, remote_dir)
+
+    if config == nil or config["remote_path"] == nil then
+        print("No valid config file for rsync")
+        return ""
+    end
+
+    local cmd = compose_sync_up_command(filename, config["remote_path"] .. remote_dir)
     safe_sync(cmd)
 end
 
