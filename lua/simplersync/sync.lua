@@ -60,7 +60,6 @@ local function get_current_config(current_dir, remote_dir)
     end
 
     local config_path = string.sub(current_dir, 1, idx - 1)
-    print(config_path)
     local config_table = config.load(config_path)
 
     return config_table

@@ -56,10 +56,8 @@ function dotenv.load(filedir)
     local t = {}
     -- Use .env as the default filename if not provided
     local filename = filedir .. ".nvim/rsyncsimple.env"
-    print(filename)
     -- Read the file content
     local content, err = readFile(filename)
-    print(content)
     -- Check if there was an error
     if not content then
         -- Return nil and the error message
