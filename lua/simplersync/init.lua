@@ -1,6 +1,6 @@
 local sync = require("simplersync.sync")
 
-vim.api.nvim_create_user_command("RsyncTesting", function(opts)
+vim.api.nvim_create_user_command("RsyncSimple", function(opts)
     local remoteDir = opts.fargs[1]
     local localFile = vim.fn.expand("%:.")
     sync.sync_up(localFile, remoteDir)
