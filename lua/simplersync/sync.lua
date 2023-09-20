@@ -87,4 +87,9 @@ function sync.sync_up(filename, current_dir)
     safe_sync(cmd, filename)
 end
 
+function sync.sync_down(filename, current_dir)
+    -- TODO: Implement sync down
+    print("SyncDown Not implement yet.")
+end
+
 return sync
