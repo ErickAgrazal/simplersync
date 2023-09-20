@@ -15,7 +15,7 @@ local function split_by(inputstr, sep)
 end
 
 --- Tries to start job and repors errors if any where found
-local function safe_sync(command)
+local function safe_sync(command, filename)
     vim.fn.jobstart(command, {
         on_stderr = function(_, output, _)
             -- skip when function reports empty error
@@ -28,6 +28,8 @@ local function safe_sync(command)
         on_exit = function(_, code, _)
             if code ~= 0 then
                 log.info(string.format("safe_sync command: '%s', on_exit with code = '%s'", command, code))
+            else
+                log.info(string.format("Successfully sync'd up %s", filename))
             end
         end,
         stdout_buffered = true,
@@ -82,7 +84,7 @@ function sync.sync_up(filename, current_dir)
     end
 
     local cmd = compose_sync_up_command(filename, config_table["remote_path"] .. remote_dir)
-    safe_sync(cmd)
+    safe_sync(cmd, filename)
 end
 
 return sync
