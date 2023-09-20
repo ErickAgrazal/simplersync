@@ -74,14 +74,14 @@ end
 function sync.sync_up(filename, current_dir)
     local remote_dir_table = split_by(filename, "/")
     local remote_dir = table.concat(remote_dir_table, "/", 1, #remote_dir_table - 1)
-    local config = get_current_config(current_dir, remote_dir)
+    local config_table = get_current_config(current_dir, remote_dir)
 
-    if config == nil or config["remote_path"] == nil then
+    if config_table == nil or config_table["remote_path"] == nil then
         print("No valid config file for rsync")
         return ""
     end
 
-    local cmd = compose_sync_up_command(filename, config["remote_path"] .. remote_dir)
+    local cmd = compose_sync_up_command(filename, config_table["remote_path"] .. remote_dir)
     safe_sync(cmd)
 end
 
