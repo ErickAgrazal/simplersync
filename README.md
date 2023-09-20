@@ -1,4 +1,4 @@
-# rsync.nvim
+# simplersync
 
 Just a simple rsync project for neovim.
 
