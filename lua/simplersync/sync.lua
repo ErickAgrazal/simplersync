@@ -20,16 +20,16 @@ local function safe_sync(command, filename)
         on_stderr = function(_, output, _)
             -- skip when function reports empty error
             if vim.inspect(output) ~= vim.inspect({ "" }) then
-                log.info(string.format("safe_sync command: '%s', on_stderr: '%s'", command, vim.inspect(output)))
+                log.info(string.format("'%s', on_stderr: '%s'", command, vim.inspect(output)))
             end
         end,
 
         -- job done executing
         on_exit = function(_, code, _)
             if code ~= 0 then
-                log.info(string.format("safe_sync command: '%s', on_exit with code = '%s'", command, code))
+                log.info(string.format("'%s', on_exit with code = '%s'", command, code))
             else
-                log.info(string.format("Successfully sync'd up %s", filename))
+                log.info(string.format("Successfully sync'd up.", filename))
             end
         end,
         stdout_buffered = true,
