@@ -12,19 +12,6 @@ local function execute_sync_down()
     sync.sync_down(local_file, current_dir)
 end
 
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
-    callback = function()
-        -- only initialize once per buffer
-        if vim.b.rsync_init == nil then
-            vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-                callback = execute_sync_up,
-                buffer = vim.api.nvim_get_current_buf(),
-            })
-            vim.b.rsync_init = 1
-        end
-    end,
-})
-
 vim.api.nvim_create_user_command("SimpleRsyncUp", execute_sync_up, {
     nargs = "?",
     complete = function(arglead, cmdline, cursopos)
