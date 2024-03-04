@@ -1,3 +1,5 @@
+local M = {}
+
 local sync = require("simplersync.sync")
 
 local function execute_sync_up()
@@ -25,3 +27,8 @@ vim.api.nvim_create_user_command("SimpleRsyncDown", execute_sync_down, {
         return { "disable", "toggle", "enable" }
     end,
 })
+
+M.execute_sync_up = execute_sync_up
+M.execute_sync_down = execute_sync_down
+
+return M
